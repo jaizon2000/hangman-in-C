@@ -1,40 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 
-int main() {
-  FILE *f;
-  
+#define WORD_SIZE (80+1)
+
+char *get_random_word() {  
   // OPEN FILE - Check for failure
-  f = fopen("/usr/share/dict/words", "r");
+  FILE *f = fopen("/usr/share/dict/words", "r");
   if (f == NULL) {
     exit(EXIT_FAILURE);
   }
   
-  char word[80]; // max 80 char in 1 word
+  static char word[WORD_SIZE]; // max 80 char in 1 word
   int count = 0;
-  srand((unsigned) time(NULL)); // randomizing  rand()
-  
- 
-  while (fgets(word, 80, f) != NULL) {
-    /* printf("\nftell: %ld\n", ftell(f)); */
-    /* printf("%s", s); */
+  while (fgets(word, WORD_SIZE, f) != NULL) {
     count++;
   }
-  
+
+  srand((unsigned) time(NULL)); // randomizing  rand()
   long int rand_num = (rand() % count);
-  printf("\nCOUNT: %d | RAND NUM: %ld\n", count,  rand_num);
-  fseek(f, rand_num, SEEK_SET);
   
-  fgets(word, 80, f);
-  fgets(word, 80, f);
-  printf("ftell: %ld\n", ftell(f));
-  printf("%s", word);
-  
-  int word_len = sizeof(word)/sizeof(word[0]);
-  char *p = &word[word_len];
-    
+  rewind(f);
+  for (int i = 0; i < rand_num; i++) {
+    if (fgets(word, WORD_SIZE, f) == NULL) {
+      fprintf(stderr, "Error fgets returned NULL");
+      exit(EXIT_FAILURE);
+    } 
+  }
   fclose(f);
   
+  return word;
+}
+int main() {
+  char *word = get_random_word();
+  printf("%s", word);
   return 0;
 }
