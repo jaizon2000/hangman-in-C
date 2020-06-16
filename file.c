@@ -60,7 +60,10 @@ bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
 
     // Guess is a word
     else {
-      
+      if (tolower(word[i]) != tolower(guess[i])) {
+	return false;
+      }
+      printf("%c, %c\n", word[i], guess[0]);
     }
   }
   return true;
