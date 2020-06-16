@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include <ctype.h>
 
 #define WORD_SIZE (80+1)
 
@@ -50,8 +51,16 @@ bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
   /* printf("%s", guess); */
   
   for (int i = 0; word[i] != '\0'; i++) {
+    // Guess is a letter
     if (strlen(guess) == (size_t) 1) {
-      printf("%c, %c\n", word[i], guess[0]);
+      if (tolower(word[i]) == tolower(guess[0])) {   
+	printf("%c, %c\n", word[i], guess[0]);
+      }
+    }
+
+    // Guess is a word
+    else {
+      
     }
   }
   return true;
