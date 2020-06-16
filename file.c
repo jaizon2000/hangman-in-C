@@ -84,6 +84,7 @@ void print_hangman(int life) {
   char *hangman[6];
   hangman[0] = "  +---+";
   hangman[1] = "  |   |";
+  hangman[6] = "=========\0";
   switch (life) {
   case 6:
     hangman[2] = "      |";
@@ -127,15 +128,13 @@ void print_hangman(int life) {
     hangman[4] = " / \\  |";
     hangman[5] = "      |";
     break;
-  default:
-    printf("IADJDSOND");
   }
-  hangman[6] = "=========\0";
+  
   /*for (char *p = hangman; p < hangman + 5; p++) {
     printf("%s\n", p);
     }*/
 
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 7; i++) {
     printf("%s\n", hangman[i]);
     }
 }
