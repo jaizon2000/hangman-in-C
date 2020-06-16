@@ -62,17 +62,16 @@ bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
 
     // Guess is a word
     else {
-      if (tolower(word[i]) != tolower(guess[i])) {
+      if (tolower(word[i]) != tolower(guess[i]))
 	return false;
-      }   
+      
       printf("%c, %c\n", word[i], guess[0]);
     }
   }
   
   if (strlen(guess) == (size_t) 1) {
-    if (letter_exists) {
+    if (letter_exists)
       return true;
-    }
     else
       return false;
   }
@@ -81,18 +80,81 @@ bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
   
 }
 
+void print_hangman(int life) {
+  char *hangman[6];
+  hangman[0] = "  +---+";
+  hangman[1] = "  |   |";
+  switch (life) {
+  case 6:
+    hangman[2] = "      |";
+    hangman[3] = "      |";
+    hangman[4] = "      |";
+    hangman[5] = "      |";
+    break;
+  case 5:
+    hangman[2] = "  O   |";
+    hangman[3] = "      |";
+    hangman[4] = "      |";
+    hangman[5] = "      |";
+    break;
+  case 4:
+    hangman[2] = "  O   |";
+    hangman[3] = "  |   |";
+    hangman[4] = "      |";
+    hangman[5] = "      |";
+    break;
+  case 3:
+    hangman[2] = "  O   |";
+    hangman[3] = " /|   |";
+    hangman[4] = "      |";
+    hangman[5] = "      |";
+    break;
+  case 2:
+    hangman[2] = "  O   |";
+    hangman[3] = " /|\\  |";
+    hangman[4] = "      |";
+    hangman[5] = "      |";
+    break;
+    case 1:
+    hangman[2] = "  O   |";
+    hangman[3] = " /|\\  |";
+    hangman[4] = " /    |";
+    hangman[5] = "      |";
+    break;
+  case 0:
+    hangman[2] = "  O   |";
+    hangman[3] = " /|\\  |";
+    hangman[4] = " / \\  |";
+    hangman[5] = "      |";
+    break;
+  default:
+    printf("IADJDSOND");
+  }
+  hangman[6] = "=========\0";
+  /*for (char *p = hangman; p < hangman + 5; p++) {
+    printf("%s\n", p);
+    }*/
 
+  for (int i = 0; i < 6; i++) {
+    printf("%s\n", hangman[i]);
+    }
+}
 
 int main() {
   int lives = 6;
+  print_hangman(0);
+  /*
   char *word = get_random_word();
-  /* printf("%s", word); */
+  // printf("%s", word);
   
   char *guess = getguess();
-  /* printf("%s\n", guess); */
+  // printf("%s\n", guess);
 
   if (!checkguess(word, guess)) {
-    printf("%d\n", --lives);
+    --lives;
   }
+  
+  printf("%d\n", lives);
+  */
   return 0;
 }
