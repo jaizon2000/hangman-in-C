@@ -48,13 +48,15 @@ char *getguess() {
 
 bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
   printf("%s", word);
-  /* printf("%s", guess); */
+  
+  bool letter_exists = false;
   
   for (int i = 0; word[i] != '\0'; i++) {
     // Guess is a letter
     if (strlen(guess) == (size_t) 1) {
       if (tolower(word[i]) == tolower(guess[0])) {   
 	printf("%c, %c\n", word[i], guess[0]);
+	letter_exists = true;
       }
     }
 
@@ -62,23 +64,35 @@ bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
     else {
       if (tolower(word[i]) != tolower(guess[i])) {
 	return false;
-      }
+      }   
       printf("%c, %c\n", word[i], guess[0]);
     }
   }
+  
+  if (strlen(guess) == (size_t) 1) {
+    if (letter_exists) {
+      return true;
+    }
+    else
+      return false;
+  }
+  // if all letters match
   return true;
+  
 }
 
 
 
 int main() {
+  int lives = 6;
   char *word = get_random_word();
   /* printf("%s", word); */
   
   char *guess = getguess();
   /* printf("%s\n", guess); */
 
-  checkguess(word, guess);
-  
+  if (!checkguess(word, guess)) {
+    printf("%d\n", --lives);
+  }
   return 0;
 }
