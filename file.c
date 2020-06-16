@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define WORD_SIZE (80+1)
 
@@ -31,8 +32,39 @@ char *get_random_word() {
   
   return word;
 }
+
+
+
+char *getguess() {
+  static char guess[WORD_SIZE];
+  printf("Guess a letter or the word: ");
+  scanf("%s", guess);
+  return guess;
+}
+
+
+
+int checkguess(char *word, char *guess) {
+  puts(word);
+  puts(guess);
+  int ch, i = 0;
+  while (ch = getchar() != '\n') {
+    if (ch != *word++) {
+      
+    }
+  }
+}
+
+
+
 int main() {
   char *word = get_random_word();
-  printf("%s", word);
+  /* printf("%s", word); */
+  
+  char *guess = getguess();
+  /* printf("%s\n", guess); */
+
+  checkguess(word, guess);
+  
   return 0;
 }
