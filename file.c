@@ -141,15 +141,22 @@ void print_hangman(int life) {
     }
 }
 
+
+
 bool find(char guess, char *array) {
   return array[guess - 'z'] != 0;
 }
 
+
+
 void print_array(char *array) {
   for (char *p = array; p < array + ALPHABET_SIZE; p++) {
-    printf("%c\n", *p);
+    printf("%c ", *p);
   }
+  printf("\n");
 }			    
+
+
 
 int main() {
   int lives = 6;
