@@ -158,6 +158,19 @@ void print_array(char *array) {
 
 
 
+void print_stats(int lives, char *letters_guessed, char *guess) {
+  print_hangman(lives);
+  printf("lives: %d\n", lives);
+
+  //lfind
+  // if not found in array
+  if (!find(tolower(*guess), letters_guessed)) {
+    letters_guessed[*guess-97] = *guess;
+  }
+  
+  print_array(letters_guessed);
+
+}
 int main() {
   int lives = 6;
   char letters_guessed[ALPHABET_SIZE] = {0};
@@ -168,16 +181,9 @@ int main() {
   if (!checkguess(word, guess)) { // if guess not correct
     --lives;
   }
+  print_stats(lives, letters_guessed, guess);
   
-  print_hangman(lives);
-  printf("lives: %d\n", lives);
-  //lfind
-  // if not found in array
-  if (!find(tolower(*guess), letters_guessed)) {
-    letters_guessed[*guess-97] = *guess;
-  }
-  print_array(letters_guessed);
-  
+    
   
     
   return 0;
