@@ -6,8 +6,12 @@
 #include <ctype.h>
 
 #define WORD_SIZE (80+1)
-#define ALPHABET_SIZE 26
+#define ALPHABET_SIZE
 
+// ------------------- 
+// get_random_word:
+// get and returnd a random word from `words` file
+// -------------------
 char *get_random_word() {
   // 1. OPEN FILE
   FILE *f = fopen("/usr/share/dict/words", "r");
@@ -34,11 +38,17 @@ char *get_random_word() {
       exit(EXIT_FAILURE);
     } 
   }
+  // 3. CLOSE FILE
   fclose(f);
   
   return word;
 }
 
+
+// ------------------- 
+// get_guess:
+// asks user for input and cleans it up
+// -------------------
 char *get_guess() {
   static char guess[WORD_SIZE];
   fgets(guess, WORD_SIZE, stdin);
@@ -48,10 +58,17 @@ char *get_guess() {
   return guess;
 }
 
+
+// ------------------- 
+// main:
+// the goods
+// -------------------
 int main() {
+  // 1. GET WORD
+  printf("word: %s\n", get_random_word());
+
+  // 2. GUESS LETTER/WORD
   printf("Guess a letter/word: ");
   printf("guess: %s\n", get_guess());
-
-  printf("word: %s\n", get_random_word());
   return 0;
 }
