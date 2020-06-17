@@ -49,7 +49,7 @@ char *getguess() {
 
 
 bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
-  printf("%s", word);
+  printf("word: %s", word);
   
   bool letter_exists = false;
   
@@ -67,7 +67,7 @@ bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
       if (tolower(word[i]) != tolower(guess[i]))
 	return false;
       
-      printf("%c, %c\n", word[i], guess[0]);
+      // printf("%c, %c\n", word[i], guess[0]);
     }
   }
   
@@ -131,10 +131,6 @@ void print_hangman(int life) {
     hangman[5] = "      |";
     break;
   }
-  
-  /*for (char *p = hangman; p < hangman + 5; p++) {
-    printf("%s\n", p);
-    }*/
 
   for (int i = 0; i < 7; i++) {
     printf("%s\n", hangman[i]);
@@ -144,45 +140,81 @@ void print_hangman(int life) {
 
 
 bool find(char guess, char *array) {
+  printf("%d", guess - 97);
   return array[guess - 'z'] != 0;
 }
 
 
 
 void print_array(char *array) {
-  for (char *p = array; p < array + ALPHABET_SIZE; p++) {
-    printf("%c ", *p);
+  for (int i = 0; i < sizeof(array) ; i++) {
+    printf("%c", array[i]);
   }
-  printf("\n");
+  printf("\n\n");
 }			    
 
 
 
-void print_stats(int lives, char *letters_guessed, char *guess) {
+void print_stats(int lives, char *letters_guessed) {
+  printf("Lives: %d\n", lives);
   print_hangman(lives);
-  printf("lives: %d\n", lives);
 
-  //lfind
-  // if not found in array
-  if (!find(tolower(*guess), letters_guessed)) {
-    letters_guessed[*guess-97] = *guess;
-  }
-  
+  printf("Letters guessed: \n");
   print_array(letters_guessed);
 
 }
+
+
+
+void blank_array(int word_length, char *guessed, char *word) {
+  for (int i = 0; i < word_length - 1; i++) {
+    if (isalpha(word[i])) {
+      guessed[i] = '_';
+    }
+    else {
+      guessed[i] = word[i];
+    }
+  }  
+}
+
 int main() {
   int lives = 6;
   char letters_guessed[ALPHABET_SIZE] = {0};
   
   char *word = get_random_word();
+
+  char user_guess[WORD_SIZE] = {0};
+  blank_array(strlen(word), user_guess, word);
+
   
+    
+  // START
+  //  print_stats(lives, letters_guessed);
+
+  // GET GUESS
   char *guess = getguess();
   if (!checkguess(word, guess)) { // if guess not correct
     --lives;
   }
-  print_stats(lives, letters_guessed, guess);
   
+  // FIND LETTER IN LETTER_GUESSED ARRAY
+  if (letters_guessed[*guess-97] != *guess) {
+    printf("ascii: %d \n", *guess-97);
+    letters_guessed[*guess-97] = *guess;
+  }
+  for (int i = 0; i < ALPHABET_SIZE; i++) {
+    if (isalpha(letters_guessed[i])) {
+      printf("%c ", letters_guessed[i]);
+    }
+  }
+  printf("\n");
+  
+    /*if (!find(tolower(*guess), letters_guessed)) { // if not found in array
+    letters_guessed[*guess-97] = *guess;
+    }*/
+  
+  //  print_stats(lives, letters_guessed);
+print_array(user_guess);
     
   
     
