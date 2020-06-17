@@ -57,7 +57,6 @@ bool checkguess(char word[WORD_SIZE], char guess[WORD_SIZE]) {
     // Guess is a letter
     if (strlen(guess) == (size_t) 1) {
       if (tolower(word[i]) == tolower(guess[0])) {   
-	printf("%c, %c\n", word[i], guess[0]);
 	letter_exists = true;
       }
     }
@@ -138,16 +137,8 @@ void print_hangman(int life) {
 }
 
 
-
-bool find(char guess, char *array) {
-  printf("%d", guess - 97);
-  return array[guess - 'z'] != 0;
-}
-
-
-
-void print_array(char *array) {
-  for (int i = 0; i < sizeof(array) ; i++) {
+void print_guess(char *array, int word_length) {
+  for (int i = 0; i < word_length; i++) {
     printf("%c", array[i]);
   }
   printf("\n\n");
@@ -155,19 +146,27 @@ void print_array(char *array) {
 
 
 
-void print_stats(int lives, char *letters_guessed) {
+void print_stats(int lives, char *letters_guessed, char *user_guess) {
   printf("Lives: %d\n", lives);
   print_hangman(lives);
 
   printf("Letters guessed: \n");
-  print_array(letters_guessed);
+  // PRINT OUT LETTERS GUESSED
+  for (int i = 0; i < ALPHABET_SIZE; i++) {
+    if (letters_guessed[i] != 0) {
+      printf("%c ", letters_guessed[i]);
+    }
+  }
+  printf("\n");
+  
 
 }
 
 
 
 void blank_array(int word_length, char *guessed, char *word) {
-  for (int i = 0; i < word_length - 1; i++) {
+  for (int i = 0; i < word_length; i++) {
+    printf("%c ", word[i]);
     if (isalpha(word[i])) {
       guessed[i] = '_';
     }
@@ -181,42 +180,35 @@ int main() {
   int lives = 6;
   char letters_guessed[ALPHABET_SIZE] = {0};
   
-  char *word = get_random_word();
+  //  char *word = get_random_word();
+  char word[]  = "Collectible's";
 
   char user_guess[WORD_SIZE] = {0};
+  
   blank_array(strlen(word), user_guess, word);
 
   
     
   // START
-  //  print_stats(lives, letters_guessed);
+  //print_stats(lives, letters_guessed);
 
   // GET GUESS
   char *guess = getguess();
+  printf("len: %d\n", (int) strlen(word));
+  
   if (!checkguess(word, guess)) { // if guess not correct
     --lives;
   }
   
-  // FIND LETTER IN LETTER_GUESSED ARRAY
+  // CHECK IF LETTER ALREADY GUESSED
   if (letters_guessed[*guess-97] != *guess) {
     printf("ascii: %d \n", *guess-97);
     letters_guessed[*guess-97] = *guess;
   }
-  for (int i = 0; i < ALPHABET_SIZE; i++) {
-    if (isalpha(letters_guessed[i])) {
-      printf("%c ", letters_guessed[i]);
-    }
-  }
-  printf("\n");
   
-    /*if (!find(tolower(*guess), letters_guessed)) { // if not found in array
-    letters_guessed[*guess-97] = *guess;
-    }*/
-  
-  //  print_stats(lives, letters_guessed);
-print_array(user_guess);
-    
-  
+
+  print_stats(lives, letters_guessed, user_guess);
+  print_guess(user_guess, (int) strlen(word));
     
   return 0;
 }
