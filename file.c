@@ -7,7 +7,7 @@
 #include <search.h>
 
 #define WORD_SIZE (80+1)
-#define ALPHABET_SIZE 25
+#define ALPHABET_SIZE (25 + 1)
 
 char *get_random_word() {  
   // OPEN FILE - Check for failure
@@ -142,16 +142,12 @@ void print_hangman(int life) {
 }
 
 bool find(char guess, char *array) {
-  for (int i = 0; i < ALPHABET_SIZE; i++) {
-    if (guess == array[i]) {
-      return true;
-    }
-  }  
-  return false;
+  return array[guess - 'z'] != 0;
 }
+
 int main() {
   int lives = 6;
-  char letters_guessed[ALPHABET_SIZE + 1];
+  char letters_guessed[ALPHABET_SIZE] = {0};
   
   char *word = get_random_word();
   
@@ -163,9 +159,11 @@ int main() {
   print_hangman(lives);
   printf("lives: %d\n", lives);
   //lfind
+  // if not found in array
   if (!find(tolower(*guess), letters_guessed)) {
     letters_guessed[(int) *guess] = *guess;
   }
+  
   letters_guessed[*guess-97] = *guess;
   for (char *p = letters_guessed; p < letters_guessed + ALPHABET_SIZE; p++) {
     printf("%c\n", *p);
