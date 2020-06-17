@@ -9,13 +9,14 @@
 #define ALPHABET_SIZE 26
 
 char *get_random_word() {
-  // OPEN FILE
+  // 1. OPEN FILE
   FILE *f = fopen("/usr/share/dict/words", "r");
   if (f == NULL) {
+    fprintf(stderr, "Error fgets returned NULL");
     exit(EXIT_FAILURE);
   }
    
-  // GETTING THE WORD
+  // 2. GETTING THE WORD
   static char word[WORD_SIZE];
   // Count how many words in file
   int total_words;
@@ -23,7 +24,17 @@ char *get_random_word() {
 
   // Set srand & get random integer
   srand((unsigned) time(NULL));
-  long int rand_num = (rand() % total_words);
+  unsigned long int rand_num = (rand() % total_words);
+
+  // Go back to beginning of file and find the word
+  rewind(f);
+  for (int i = 0; i < rand_num; i++) {
+    if (fgets(word, WORD_SIZE, f) == NULL) {
+      fprintf(stderr, "Error fgets returned NULL");
+      exit(EXIT_FAILURE);
+    } 
+  }
+  fclose(f);
   
   return word;
 }
