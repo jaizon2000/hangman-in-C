@@ -145,6 +145,12 @@ bool find(char guess, char *array) {
   return array[guess - 'z'] != 0;
 }
 
+void print_array(char *array) {
+  for (char *p = array; p < array + ALPHABET_SIZE; p++) {
+    printf("%c\n", *p);
+  }
+}			    
+
 int main() {
   int lives = 6;
   char letters_guessed[ALPHABET_SIZE] = {0};
@@ -161,13 +167,11 @@ int main() {
   //lfind
   // if not found in array
   if (!find(tolower(*guess), letters_guessed)) {
-    letters_guessed[(int) *guess] = *guess;
+    letters_guessed[*guess-97] = *guess;
   }
+  print_array(letters_guessed);
   
-  letters_guessed[*guess-97] = *guess;
-  for (char *p = letters_guessed; p < letters_guessed + ALPHABET_SIZE; p++) {
-    printf("%c\n", *p);
-  }
+  
     
   return 0;
 }
