@@ -4,8 +4,10 @@
 #include <stdbool.h>
 #include <time.h>
 #include <ctype.h>
+#include <search.h>
 
 #define WORD_SIZE (80+1)
+#define ALPHABET_SIZE 25
 
 char *get_random_word() {  
   // OPEN FILE - Check for failure
@@ -139,21 +141,35 @@ void print_hangman(int life) {
     }
 }
 
+bool find(char guess, char *array) {
+  for (int i = 0; i < ALPHABET_SIZE; i++) {
+    if (guess == array[i]) {
+      return true;
+    }
+  }  
+  return false;
+}
 int main() {
   int lives = 6;
-  print_hangman(0);
-  /*
+  char letters_guessed[ALPHABET_SIZE + 1];
+  
   char *word = get_random_word();
-  // printf("%s", word);
   
   char *guess = getguess();
-  // printf("%s\n", guess);
-
-  if (!checkguess(word, guess)) {
+  if (!checkguess(word, guess)) { // if guess not correct
     --lives;
   }
   
-  printf("%d\n", lives);
-  */
+  print_hangman(lives);
+  printf("lives: %d\n", lives);
+  //lfind
+  if (!find(tolower(*guess), letters_guessed)) {
+    letters_guessed[(int) *guess] = *guess;
+  }
+  letters_guessed[*guess-97] = *guess;
+  for (char *p = letters_guessed; p < letters_guessed + ALPHABET_SIZE; p++) {
+    printf("%c\n", *p);
+  }
+    
   return 0;
 }
