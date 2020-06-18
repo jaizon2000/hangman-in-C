@@ -40,7 +40,10 @@ char *get_random_word() {
   }
   // 3. CLOSE FILE
   fclose(f);
-  
+
+  // 4. Replace '\n' with '\0'
+  char *p = strchr(word, '\n');
+  *p = '\0';
   return word;
 }
 
@@ -51,24 +54,73 @@ char *get_random_word() {
 // -------------------
 char *get_guess() {
   static char guess[WORD_SIZE];
+  
   fgets(guess, WORD_SIZE, stdin);
+  
   char *p = strchr(guess, ' ') != NULL ? strchr(guess, ' '): strchr(guess, '\n');
   *p = '\0';
-    
+  
   return guess;
 }
+// -------------------
+// check_user_guess:
+//
+// -------------------
 
+bool check_user_guess(char *random_word, char *user_guess) {
+  // A. USER GUESSES A WORD
+  if (strlen(user_guess) > (size_t) 1) {
+    // Guessed the word correctly
+    if (strcmp(random_word, user_guess) == 0) {
+      printf("Word guessed correctly!\n");
+      exit(EXIT_SUCCESS);
+    }
+    // Guessed word incorrectly
+    else {
+      return false;
+    }
+  }
+  
+  // B. USER GUESSES A LETTER
+  else {
+    // Point to where the letter matches in random_word
+    // If ch not found, return true; else return false
+    char *matching_ch = strchr(random_word, *user_guess);
+    if (matching_ch != NULL) {
+      return true;
+    }
+    else {
+      return false;
+    }
+    
+    printf("matching_ch: %c\n", *matching_ch);
+  }
+}
 
 // ------------------- 
 // main:
 // the goods
 // -------------------
 int main() {
+  // 0. USER STATS
+  int lives = 6;
+  
   // 1. GET WORD
-  printf("word: %s\n", get_random_word());
-
+  char *random_word = get_random_word();
+  printf("word: %s\n", random_word);
+  
   // 2. GUESS LETTER/WORD
   printf("Guess a letter/word: ");
-  printf("guess: %s\n", get_guess());
+  char *user_guess = get_guess();
+
+  // 3. CHECK USER_GUESS
+  printf("\nCheck User Guess \n");
+  char check = check_user_guess(random_word, user_guess);
+  printf("char found?: %s\n", check ==  true ? "true" : "false");
+
+  // 4. UPDATE USER STATS
+  if (check == false) {
+    --lives;
+  }
   return 0;
 }
