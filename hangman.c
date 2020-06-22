@@ -66,9 +66,9 @@ char *get_guess() {
   return guess;
 }
 
-
+// **********************************
 // -------------------
-// check_user_guess:
+// check_user_guess: replace_underline_to_letter
 //
 // -------------------
 bool check_user_guess(char *random_word, char *user_guess) {
@@ -122,13 +122,6 @@ char *put_underlines(char *word) {
   return letters_guessed;
 }
 
-char *replace_underline_to_letter(char *user_guess, int isGuessedWord, char *word) {
-  for (int i = 0; i < strlen(word); i++) {
-  }
-  return NULL;
-  }
-
-
 
 // ------------------- 
 // main:
@@ -141,17 +134,17 @@ int main() {
   
   // 1. GET WORD
   char *random_word = get_random_word();
-  printf("word: %s\nword length: %d\n", random_word, strlen(random_word));
+  printf("word: %s\nword length: %ld\n", random_word, strlen(random_word));
   char *letters_guessed = put_underlines(random_word);
   
   
   
   do {
     printf("%s\n", letters_guessed);
+    
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
-    letter_guessed = replace_underline_to_letter;
-
+      
     // 3. CHECK USER_GUESS
     printf("\nCheck User Guess \n-----------\n");
     check = check_user_guess(random_word, user_guess);
