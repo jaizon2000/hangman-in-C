@@ -77,6 +77,7 @@ bool check_user_guess(char *random_word, char *user_guess) {
     // Guessed the word correctly
     if (strcmp(random_word, user_guess) == 0) {
       printf("Word guessed correctly!\n");
+      
       exit(EXIT_SUCCESS);
     }
     // Guessed word incorrectly
@@ -101,19 +102,17 @@ bool check_user_guess(char *random_word, char *user_guess) {
   }
 }
 
-
-char *put_underlines(char *word, int word_len, char *user_guess) {
+// ------------------- 
+// put_underlines:
+// 
+// -------------------
+char *put_underlines(char *word) {
   static char letters_guessed[MAX_WORD_SIZE];
-  for (int i = 0; i < word_len; i++) {
+  for (int i = 0; i < strlen(word); i++) {
     printf("%c ", word[i]);
     if (isalpha(word[i])) {
       letters_guessed[i] = '_';
-      if (strncmp(word, user_guess, (size_t) 1) == 0) {
-	if (strcmp(word,user_guess) == 0) {
-	  printf("Guessed the whole word\n");
-	}
-	letters_guessed[i] = word[i];
-      }
+     
     }
     else {
       letters_guessed[i] = word[i];
@@ -122,6 +121,12 @@ char *put_underlines(char *word, int word_len, char *user_guess) {
   printf("\n");
   return letters_guessed;
 }
+
+char *replace_underline_to_letter(char *user_guess, int isGuessedWord, char *word) {
+  for (int i = 0; i < strlen(word); i++) {
+  }
+  return NULL;
+  }
 
 
 
@@ -136,18 +141,16 @@ int main() {
   
   // 1. GET WORD
   char *random_word = get_random_word();
-  int word_len = strlen(random_word);
-  printf("word: %s\nword length: %d\n", random_word, word_len);
-  char *letters_guessed = put_underlines(random_word, word_len, NULL);
+  printf("word: %s\nword length: %d\n", random_word, strlen(random_word));
+  char *letters_guessed = put_underlines(random_word);
   
   
   
   do {
-    
     printf("%s\n", letters_guessed);
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
-    letters_guessed = put_underlines(random_word, word_len, user_guess);
+    letter_guessed = replace_underline_to_letter;
 
     // 3. CHECK USER_GUESS
     printf("\nCheck User Guess \n-----------\n");
