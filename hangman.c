@@ -9,6 +9,15 @@
 #define ALPHABET_SIZE 26
 
 // ------------------- 
+// toStrLower:
+// make all the char of str lowercase
+// -------------------
+void toStrLower(char *string, int str_len) {
+  for (int i = 0; i != str_len; i++) {
+    string[i] = tolower(string[i]); 
+  }
+}
+// ------------------- 
 // get_random_word:
 // get and returnd a random word from `words` file
 // -------------------
@@ -44,8 +53,13 @@ char *get_random_word() {
   // 4. Replace '\n' with '\0'
   char *p = strchr(word, '\n');
   *p = '\0';
+
+  // 5. Make all letters lower case
+  toStrLower(word, strlen(word));
+
   return word;
 }
+
 
 
 // ------------------- 
@@ -54,13 +68,11 @@ char *get_random_word() {
 // -------------------
 char *get_guess() {
   static char guess[MAX_WORD_SIZE];
-
+  
   printf("Guess a letter/word: ");
   fgets(guess, MAX_WORD_SIZE, stdin);
   
-  char *p = strchr(guess, ' ') != NULL ?
-    strchr(guess, ' ') : strchr(guess, '\n');
-  
+  char *p = strchr(guess, ' ') != NULL ? strchr(guess, ' ') : strchr(guess, '\n');
   *p = '\0';
   
   return guess;
@@ -124,12 +136,12 @@ char *put_underlines(char *word) {
 void checking(char *word, char letters_guessed[], char *user_guess) {
   for (int i = 0; i < strlen(word); i++) {
     if (strlen(user_guess) == 1 && word[i] == *user_guess) {
-      letters_guessed[tolower(*user_guess)-'a'] = tolower(*user_guess);
+      letters_guessed[tolower(*user_guess) - 'a'] = tolower(*user_guess);
       printf("NICE\n");
     }
   }
-  
 }
+
 
 // ------------------- 
 // main:
@@ -148,14 +160,17 @@ int main() {
   
   char *underlines = put_underlines(random_word);
   
-  //  printf("%s\n", letters_guessed);
-  
   
   do {
     printf("%s\n", underlines);
     
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
+    /* for (int i = 0; i != strlen(random_word); i++) { */
+    /*   user_guess[i] = tolower(user_guess[i]); */
+    /*   printf("%c | %c\n", user_guess[i], tolower(user_guess[i])); */
+    /* } */
+    toStrLower(user_guess, strlen(user_guess));
     checking(random_word, letters_guessed, user_guess);
     for (int i = 0; i < ALPHABET_SIZE; i++)
       printf("%c ", letters_guessed[i]);
