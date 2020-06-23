@@ -6,7 +6,7 @@
 #include <ctype.h>
 
 #define MAX_WORD_SIZE (80+1)
-#define ALPHABET_SIZE
+#define ALPHABET_SIZE 26
 
 // ------------------- 
 // get_random_word:
@@ -121,7 +121,11 @@ char *put_underlines(char *word) {
   printf("\n");
   return letters_guessed;
 }
-
+void checking(char *word, char letters_guessed[]) {
+  for (int i = 0; i < ALPHABET_SIZE; i++) {
+    printf("%c | %c\n", word[i], letters_guessed[i]);
+  }
+}
 
 // ------------------- 
 // main:
@@ -135,16 +139,19 @@ int main() {
   // 1. GET WORD
   char *random_word = get_random_word();
   printf("word: %s\nword length: %ld\n", random_word, strlen(random_word));
-  char *letters_guessed = put_underlines(random_word);
-  
+  char letters_guessed[ALPHABET_SIZE] = {0};
+  char *underlines = put_underlines(random_word);
+  checking(random_word, letters_guessed);
   
   
   do {
-    printf("%s\n", letters_guessed);
+    printf("%s\n", underlines);
     
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
-      
+    if (strstr(random_word, user_guess) != NULL && strlen(user_guess) ==  1)
+      printf("GOOOD\n");
+    
     // 3. CHECK USER_GUESS
     printf("\nCheck User Guess \n-----------\n");
     check = check_user_guess(random_word, user_guess);
