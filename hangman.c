@@ -9,18 +9,23 @@
 #define ALPHABET_SIZE 26
 
 // ------------------- 
-// toStrLower:
+// to_str_lower:
 // make all the char of str lowercase
 // -------------------
-void toStrLower(char *string, int str_len) {
-  for (int i = 0; i != str_len; i++) {
+void to_str_lower(char *string) {
+  for (int i = 0; i != strlen(string); i++) {
     string[i] = tolower(string[i]); 
   }
 }
 
-bool isGuessWord(char *string) {
-  return strlen(string) > 1 ? true : false; 
+// ------------------- 
+// is_guess_word:
+// 
+// -------------------
+bool is_guess_word(char *string) {
+  return strlen(string) > 1;
 }
+
 // ------------------- 
 // get_random_word:
 // get and returnd a random word from `words` file
@@ -56,10 +61,12 @@ char *get_random_word() {
 
   // 4. Replace '\n' with '\0'
   char *p = strchr(word, '\n');
-  *p = '\0';
+  if (p != NULL) {
+    *p = '\0';
+  }
 
   // 5. Make all letters lower case
-  toStrLower(word, strlen(word));
+  to_str_lower(word);
 
   return word;
 }
@@ -78,9 +85,11 @@ char *get_guess() {
 
   // Find ' ' or '\n' and change to a null char '\0'
   char *p = strchr(guess, ' ') != NULL ? strchr(guess, ' ') : strchr(guess, '\n');
-  *p = '\0';
+  if (p != NULL) {
+    *p = '\0';
+  }
 
-  toStrLower(guess, strlen(guess));
+  to_str_lower(guess);
   return guess;
 }
 
@@ -104,7 +113,7 @@ char *put_underlines(char *word) {
   return letters_guessed;
 }
 
-
+// ******* MAKE 2 functions?
 // ------------------- 
 // add_guess_to_letters_guessed:
 // 
@@ -113,20 +122,20 @@ void add_guess_to_letters_guessed(char *word, char letters_guessed[], char *user
   for (int i = 0; i < strlen(word); i++) {
     if (isalpha(word[i])) {
       // A. CHARACTER GUESSED
-      if (!isGuessWord(user_guess) && word[i] == *user_guess) {
-	letters_guessed[*user_guess - 'a'] = *user_guess;
+      if (!is_guess_word(user_guess) && word[i] == *user_guess) {
+        letters_guessed[*user_guess - 'a'] = *user_guess;
       }
-      
+
       // B. WHOLE WORD GUESSED
-      else if (isGuessWord(user_guess) && strcmp(word, user_guess) == 0) {
-	letters_guessed[word[i]-'a'] = word[i];
+      else if (is_guess_word(user_guess) && strcmp(word, user_guess) == 0) {
+        letters_guessed[word[i]-'a'] = word[i];
       }
-    }
-    user_guess[-1] = '\0';      
+    }    
   }
 }
 
-bool isGuessInWord(char *word, char *letters_guessed) {
+//****
+bool is_guess_in_word(char *word, char *letters_guessed) {
   for (int i = 0; i < strlen(word); i++) {
     if (strchr(letters_guessed, word[i])) {
       return true;
@@ -157,16 +166,17 @@ int main() {
     
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
-    
+    //check something before anything else
     // Add guessed letters to letters_guessed
     add_guess_to_letters_guessed(random_word, letters_guessed, user_guess);
     
     for (int i = 0; i < ALPHABET_SIZE; i++)
       printf("%c ", letters_guessed[i]);
-    
-    if (!isGuessInWord(random_word, letters_guessed)) {
+
+    //***
+    if (!is_guess_in_word(random_word, letters_guessed)) {
 	--lives;
-      }
+    }
     printf("\nlives: %d\n", lives);
     
   } while (lives > 0);
