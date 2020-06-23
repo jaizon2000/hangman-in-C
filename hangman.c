@@ -71,47 +71,13 @@ char *get_guess() {
   
   printf("Guess a letter/word: ");
   fgets(guess, MAX_WORD_SIZE, stdin);
-  
+
+  // Find ' ' or '\n' and change to a null char '\0'
   char *p = strchr(guess, ' ') != NULL ? strchr(guess, ' ') : strchr(guess, '\n');
   *p = '\0';
-  
-  return guess;
-}
 
-// **********************************
-// -------------------
-// check_user_guess: replace_underline_to_letter
-//
-// -------------------
-bool check_user_guess(char *random_word, char *user_guess) {
-  // A. USER GUESSES A WORD
-  if (strlen(user_guess) > (size_t) 1) {
-    // Guessed the word correctly
-    if (strcmp(random_word, user_guess) == 0) {
-      printf("Word guessed correctly!\n");
-      
-      exit(EXIT_SUCCESS);
-    }
-    // Guessed word incorrectly
-    else {
-      return false;
-    }
-  }
-  
-  // B. USER GUESSES A LETTER
-  else {
-    // Point to where the letter matches in random_word
-    // If ch not found, return true; else return false
-    char *matching_ch = strchr(random_word, *user_guess);
-    if (matching_ch != NULL) {
-      return true;
-    }
-    else {
-      return false;
-    }
-    
-    printf("matching_ch: %c\n", *matching_ch);
-  }
+  toStrLower(guess, strlen(guess));
+  return guess;
 }
 
 // ------------------- 
@@ -133,15 +99,23 @@ char *put_underlines(char *word) {
   printf("\n");
   return letters_guessed;
 }
-void checking(char *word, char letters_guessed[], char *user_guess) {
+
+void add_to_letters_guessed(char *word, char letters_guessed[], char *user_guess) {
   for (int i = 0; i < strlen(word); i++) {
-    if (strlen(user_guess) == 1 && word[i] == *user_guess) {
-      letters_guessed[tolower(*user_guess) - 'a'] = tolower(*user_guess);
-      printf("NICE\n");
+    if (isalpha(word[i])) {
+      // A. CHARACTER GUESSED
+      if (strlen(user_guess) == 1 && word[i] == *user_guess) {
+	letters_guessed[*user_guess - 'a'] = *user_guess;
+      }
+      
+      // B. WHOLE WORD GUESSED
+      else if (strlen(user_guess) > 1 && strcmp(word, user_guess) == 0) {
+	letters_guessed[word[i]-'a'] = word[i];
+      }
     }
+    user_guess[-1] = '\0';      
   }
 }
-
 
 // ------------------- 
 // main:
@@ -166,12 +140,8 @@ int main() {
     
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
-    /* for (int i = 0; i != strlen(random_word); i++) { */
-    /*   user_guess[i] = tolower(user_guess[i]); */
-    /*   printf("%c | %c\n", user_guess[i], tolower(user_guess[i])); */
-    /* } */
-    toStrLower(user_guess, strlen(user_guess));
-    checking(random_word, letters_guessed, user_guess);
+    
+    add_to_letters_guessed(random_word, letters_guessed, user_guess);
     for (int i = 0; i < ALPHABET_SIZE; i++)
       printf("%c ", letters_guessed[i]);
     
