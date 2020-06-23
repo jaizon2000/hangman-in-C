@@ -17,6 +17,10 @@ void toStrLower(char *string, int str_len) {
     string[i] = tolower(string[i]); 
   }
 }
+
+bool isGuessWord(char *string) {
+  return strlen(string) > 1 ? true : false; 
+}
 // ------------------- 
 // get_random_word:
 // get and returnd a random word from `words` file
@@ -100,16 +104,21 @@ char *put_underlines(char *word) {
   return letters_guessed;
 }
 
-void add_to_letters_guessed(char *word, char letters_guessed[], char *user_guess) {
+
+// ------------------- 
+// add_guess_to_letters_guessed:
+// 
+// -------------------
+void add_guess_to_letters_guessed(char *word, char letters_guessed[], char *user_guess) {
   for (int i = 0; i < strlen(word); i++) {
     if (isalpha(word[i])) {
       // A. CHARACTER GUESSED
-      if (strlen(user_guess) == 1 && word[i] == *user_guess) {
+      if (!isGuessWord(user_guess) && word[i] == *user_guess) {
 	letters_guessed[*user_guess - 'a'] = *user_guess;
       }
       
       // B. WHOLE WORD GUESSED
-      else if (strlen(user_guess) > 1 && strcmp(word, user_guess) == 0) {
+      else if (isGuessWord(user_guess) && strcmp(word, user_guess) == 0) {
 	letters_guessed[word[i]-'a'] = word[i];
       }
     }
@@ -117,6 +126,14 @@ void add_to_letters_guessed(char *word, char letters_guessed[], char *user_guess
   }
 }
 
+bool isGuessInWord(char *word, char *letters_guessed) {
+  for (int i = 0; i < strlen(word); i++) {
+    if (strchr(letters_guessed, word[i])) {
+      return true;
+    }
+  }
+  return false;
+}
 // ------------------- 
 // main:
 // the goods
@@ -124,7 +141,7 @@ void add_to_letters_guessed(char *word, char letters_guessed[], char *user_guess
 int main() {
   // 0. USER STATS
   int lives = 6;
-  bool check = false;
+
   
   // 1. GET WORD
   char *random_word = get_random_word();
@@ -141,24 +158,17 @@ int main() {
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
     
-    add_to_letters_guessed(random_word, letters_guessed, user_guess);
+    // Add guessed letters to letters_guessed
+    add_guess_to_letters_guessed(random_word, letters_guessed, user_guess);
+    
     for (int i = 0; i < ALPHABET_SIZE; i++)
       printf("%c ", letters_guessed[i]);
     
-    // 3. CHECK USER_GUESS
-    printf("\nCheck User Guess \n-----------\n");
-    check = check_user_guess(random_word, user_guess);
-  
-    printf("char found?: %s\n", check ==  true ? "true" : "false");
-
-    // 4. UPDATE USER STATS
-    if (check == true) {
-      
-    }
-    else {
-      --lives;
-    }
-    printf("lives: %d\n", lives);
+    if (!isGuessInWord(random_word, letters_guessed)) {
+	--lives;
+      }
+    printf("\nlives: %d\n", lives);
+    
   } while (lives > 0);
 
   return 0;
