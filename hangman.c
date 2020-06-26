@@ -98,42 +98,37 @@ char *get_guess() {
 // put_underlines:
 // 
 // -------------------
-char *put_underlines(char *word, char array[]) {
-  static char letters_guessed[MAX_WORD_SIZE];
+char *put_underlines(char *word, char letters_guessed[]) {
+  static char user_guess[MAX_WORD_SIZE];
   for (int i = 0; i < strlen(word); i++) {
-    printf("%c ", word[i]);
-    if (isalpha(word[i])) {
-      letters_guessed[i] = '_';
-     
-    }
-    else {
-      letters_guessed[i] = word[i];
+    //printf("%c ", word[i]);
+    printf("this: %s ", letters_guessed);
+    if (strchr(letters_guessed, word[i])) {
+      user_guess[i] = word[i];
+    } else if (strlen(letters_guessed) == 0 && isalpha(word[i])) {
+      user_guess[i] = '_';
+
+    } else {
+      user_guess[i] = word[i];
     }
   }
   printf("\n");
-  return letters_guessed;
+  return user_guess;
 }
 
-// ******* MAKE 2 functions?
 // ------------------- 
-// add_guess_to_letters_guessed:
+// put_guess_in_letters_guessed:
 // 
 // -------------------
-void add_guess_to_letters_guessed(char *word, char letters_guessed[], char *user_guess) {
-  for (int i = 0; i < strlen(word); i++) {
-    if (isalpha(word[i])) {
-      // A. CHARACTER GUESSED
-      if (!is_guess_word(user_guess) && word[i] == *user_guess) {
-        letters_guessed[*user_guess - 'a'] = *user_guess;
-      }
-
-      // B. WHOLE WORD GUESSED
-      else if (is_guess_word(user_guess) && strcmp(word, user_guess) == 0) {
-        letters_guessed[word[i]-'a'] = word[i];
-      }
-    }    
+void put_guess_in_letters_guessed(char letters_guessed[], char *user_guess) {
+  for (int i = 0; i < strlen(user_guess); i++) {
+    if (isalpha(user_guess[i])) {
+      letters_guessed[user_guess[i] - 'a'] = user_guess[i];
+    }
   }
 }
+
+  
 
 // ------------------- 
 // is_guess_in_word:
@@ -163,17 +158,16 @@ int main() {
   
   char letters_guessed[ALPHABET_SIZE] = {0};
   
-  char *underlines = put_underlines(random_word, letters_guessed);
-  
   
   do {
-    printf("%s\n", underlines);
+    char *underlines = put_underlines(random_word, letters_guessed);
+    printf("%s\n", put_underlines(random_word, letters_guessed));
     
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
     
     // Add guessed letters to letters_guessed
-    add_guess_to_letters_guessed(random_word, letters_guessed, user_guess);
+    put_guess_in_letters_guessed(letters_guessed, user_guess);
 
     // Prints Guessed Letters
     for (int i = 0; i < ALPHABET_SIZE; i++)
