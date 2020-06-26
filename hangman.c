@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -97,7 +98,7 @@ char *get_guess() {
 // put_underlines:
 // 
 // -------------------
-char *put_underlines(char *word) {
+char *put_underlines(char *word, char array[]) {
   static char letters_guessed[MAX_WORD_SIZE];
   for (int i = 0; i < strlen(word); i++) {
     printf("%c ", word[i]);
@@ -134,12 +135,16 @@ void add_guess_to_letters_guessed(char *word, char letters_guessed[], char *user
   }
 }
 
-//****
-bool is_guess_in_word(char *word, char *letters_guessed) {
-  for (int i = 0; i < strlen(word); i++) {
-    if (strchr(letters_guessed, word[i])) {
-      return true;
-    }
+// ------------------- 
+// is_guess_in_word:
+// 
+// -------------------
+bool is_guess_in_word(char *word, char *letters_guessed, char *user_guess) {
+  if (is_guess_word(user_guess)) {
+    return strstr(word, user_guess) != NULL && strlen(user_guess) == strlen(word) ? true : false;
+  }
+  else if (!is_guess_word(user_guess)) {
+    return strchr(word,  *user_guess) != NULL ? true : false;
   }
   return false;
 }
@@ -158,7 +163,7 @@ int main() {
   
   char letters_guessed[ALPHABET_SIZE] = {0};
   
-  char *underlines = put_underlines(random_word);
+  char *underlines = put_underlines(random_word, letters_guessed);
   
   
   do {
@@ -166,15 +171,16 @@ int main() {
     
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
-    //check something before anything else
+    
     // Add guessed letters to letters_guessed
     add_guess_to_letters_guessed(random_word, letters_guessed, user_guess);
-    
+
+    // Prints Guessed Letters
     for (int i = 0; i < ALPHABET_SIZE; i++)
       printf("%c ", letters_guessed[i]);
 
-    //***
-    if (!is_guess_in_word(random_word, letters_guessed)) {
+    //If guess not in the word, --lives
+    if (!is_guess_in_word(random_word, letters_guessed, user_guess)) {
 	--lives;
     }
     printf("\nlives: %d\n", lives);
