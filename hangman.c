@@ -98,22 +98,19 @@ char *get_guess() {
 // put_underlines:
 // 
 // -------------------
-char *put_underlines(char *word, char letters_guessed[]) {
-  static char user_guess[MAX_WORD_SIZE];
-  for (int i = 0; i < strlen(word); i++) {
-    //printf("%c ", word[i]);
-    printf("this: %s ", letters_guessed);
-    if (strchr(letters_guessed, word[i])) {
-      user_guess[i] = word[i];
-    } else if (strlen(letters_guessed) == 0 && isalpha(word[i])) {
-      user_guess[i] = '_';
-
-    } else {
-      user_guess[i] = word[i];
+void print_underlines(const char *word, const char letters_guessed[]) {
+  char underlines[MAX_WORD_SIZE];
+  strcpy(underlines, word);
+  
+  printf("word: [%s]\nletters_guessed: [%s]\n", word, letters_guessed);
+  
+  for (int i = 0; i < strlen(underlines); i++) {
+    // printf("%c | %p\n", underlines[i], strchr(letters_guessed, underlines[i]));
+    if (strchr(letters_guessed, underlines[i]) == NULL) {
+      underlines[i] = '_';
     }
   }
-  printf("\n");
-  return user_guess;
+  puts(underlines);
 }
 
 // ------------------- 
@@ -156,27 +153,30 @@ int main() {
   char *random_word = get_random_word();
   printf("word: %s\nword length: %ld\n", random_word, strlen(random_word));
   
-  char letters_guessed[ALPHABET_SIZE] = {0};
+  char letters_guessed[ALPHABET_SIZE + 1] = {0};
+
+  memset(letters_guessed, ' ', ALPHABET_SIZE);
+  
   
   
   do {
-    char *underlines = put_underlines(random_word, letters_guessed);
-    printf("%s\n", put_underlines(random_word, letters_guessed));
+    print_underlines(random_word, letters_guessed);
     
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
     
     // Add guessed letters to letters_guessed
     put_guess_in_letters_guessed(letters_guessed, user_guess);
-
+    
     // Prints Guessed Letters
     for (int i = 0; i < ALPHABET_SIZE; i++)
       printf("%c ", letters_guessed[i]);
-
+    
     //If guess not in the word, --lives
     if (!is_guess_in_word(random_word, letters_guessed, user_guess)) {
 	--lives;
     }
+    
     printf("\nlives: %d\n", lives);
     
   } while (lives > 0);
