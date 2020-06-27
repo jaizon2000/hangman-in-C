@@ -72,8 +72,6 @@ char *get_random_word() {
   return word;
 }
 
-
-
 // ------------------- 
 // get_guess:
 // asks user for input and cleans it up
@@ -95,18 +93,17 @@ char *get_guess() {
 }
 
 // ------------------- 
-// put_underlines:
+// print_underlines:
 // 
 // -------------------
 void print_underlines(const char *word, const char letters_guessed[]) {
   char underlines[MAX_WORD_SIZE];
   strcpy(underlines, word);
   
-  printf("word: [%s]\nletters_guessed: [%s]\n", word, letters_guessed);
-  
   for (int i = 0; i < strlen(underlines); i++) {
-    // printf("%c | %p\n", underlines[i], strchr(letters_guessed, underlines[i]));
-    if (strchr(letters_guessed, underlines[i]) == NULL) {
+    if (!isalpha(underlines[i])) {
+    }
+    else if (strchr(letters_guessed, underlines[i]) == NULL) {
       underlines[i] = '_';
     }
   }
@@ -120,7 +117,9 @@ void print_underlines(const char *word, const char letters_guessed[]) {
 void put_guess_in_letters_guessed(char letters_guessed[], char *user_guess) {
   for (int i = 0; i < strlen(user_guess); i++) {
     if (isalpha(user_guess[i])) {
-      letters_guessed[user_guess[i] - 'a'] = user_guess[i];
+      if (!is_guess_word(user_guess)) {
+	letters_guessed[user_guess[i] - 'a'] = user_guess[i];
+      }
     }
   }
 }
@@ -140,6 +139,28 @@ bool is_guess_in_word(char *word, char *letters_guessed, char *user_guess) {
   }
   return false;
 }
+
+// ------------------- 
+// is_word_guessed:
+// 
+// -------------------
+bool is_word_guessed(const char *word, const char letters_guessed[], char *user_guess) {
+  char alpha_word[strlen(word)];
+  if (strcmp(word, user_guess) == 0)
+    return true;
+  
+  for (int i = 0; i < strlen(word); i++) {
+    if (isalpha(word[i]))
+      alpha_word[i] = word[i];
+  }
+  
+  for (int i = 0; i < strlen(word); i++) {
+    if (strchr(letters_guessed, alpha_word[i]) == NULL) {
+      return false;
+    }
+  }
+  return true;
+}
 // ------------------- 
 // main:
 // the goods
@@ -154,20 +175,23 @@ int main() {
   printf("word: %s\nword length: %ld\n", random_word, strlen(random_word));
   
   char letters_guessed[ALPHABET_SIZE + 1] = {0};
-
   memset(letters_guessed, ' ', ALPHABET_SIZE);
-  
-  
   
   do {
     print_underlines(random_word, letters_guessed);
     
     // 2. GUESS LETTER/WORD
     char *user_guess = get_guess();
-    
+
     // Add guessed letters to letters_guessed
     put_guess_in_letters_guessed(letters_guessed, user_guess);
-    
+
+    // Check if word is guessed correctly
+    if (is_word_guessed(random_word, letters_guessed, user_guess)) {
+      fputs("Correctly guessed!\n", stdout);
+      exit(EXIT_SUCCESS);
+    }
+
     // Prints Guessed Letters
     for (int i = 0; i < ALPHABET_SIZE; i++)
       printf("%c ", letters_guessed[i]);
@@ -178,7 +202,6 @@ int main() {
     }
     
     printf("\nlives: %d\n", lives);
-    
   } while (lives > 0);
 
   return 0;
