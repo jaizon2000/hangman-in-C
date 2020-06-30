@@ -11,7 +11,7 @@
 
 // ------------------- 
 // to_str_lower:
-// make all the char of str lowercase
+// Make all the char of str lowercase
 // -------------------
 void to_str_lower(char *string) {
   for (int i = 0; i != strlen(string); i++) {
@@ -29,7 +29,7 @@ bool is_guess_word(char *string) {
 
 // ------------------- 
 // get_random_word:
-// get and returnd a random word from `words` file
+// Get and returnd a random word from `words` file
 // -------------------
 char *get_random_word() {
   // 1. OPEN FILE
@@ -74,7 +74,7 @@ char *get_random_word() {
 
 // ------------------- 
 // get_guess:
-// asks user for input and cleans it up and returns it
+// Asks user for input and cleans it up and returns it
 // -------------------
 char *get_guess() {
   static char guess[MAX_WORD_SIZE];
@@ -94,7 +94,7 @@ char *get_guess() {
 
 // ------------------- 
 // print_underlines:
-// print the letters in the user guessed correctly
+// Print the letters in the user guessed correctly
 // -------------------
 void print_underlines(const char *word, const char letters_guessed[]) {
   char underlines[MAX_WORD_SIZE];
@@ -112,7 +112,7 @@ void print_underlines(const char *word, const char letters_guessed[]) {
 
 // ------------------- 
 // put_guess_in_letters_guessed:
-// puts all the guessed letters into an array
+// Puts all the guessed letters into an array
 // -------------------
 void put_guess_in_letters_guessed(char letters_guessed[], char *user_guess) {
   for (int i = 0; i < strlen(user_guess); i++) {
