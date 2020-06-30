@@ -143,20 +143,21 @@ bool is_guess_in_word(const char *word, char *letters_guessed, char *user_guess)
 // Is the word guessed?
 // -------------------
 bool is_word_guessed(const char *word, const char letters_guessed[], char *user_guess) {
-  char alpha_word[strlen(word)];
-  if (strcmp(word, user_guess) == 0)
-    return true;
-  
-  for (int i = 0; i < strlen(word); i++) {
-    if (isalpha(word[i]))
-      alpha_word[i] = word[i];
-  }
-  
-  for (int i = 0; i < strlen(word); i++) {
-    if (strchr(letters_guessed, alpha_word[i]) == NULL) {
-      return false;
+  // If guess is a letter
+  if (!is_guess_word(user_guess)) {
+    while (*word++) {
+      if (isalpha(*word) && strchr(letters_guessed, *word) == NULL) {
+	return false;
+      }
     }
   }
+  
+  // If guess is a word
+  else {    
+    if (strcmp(word, user_guess) == 0)
+      return true;
+  }
+  
   return true;
 }
 
@@ -230,7 +231,6 @@ int main() {
 
   // 1. GET WORD
   char *random_word = get_random_word();
-  //  printf("word: %s\nword length: %ld\n", random_word, strlen(random_word));
   
   char letters_guessed[ALPHABET_SIZE + 1] = {0};
   memset(letters_guessed, ' ', ALPHABET_SIZE);
@@ -248,25 +248,26 @@ int main() {
     // Add guessed letters to letters_guessed
     put_guess_in_letters_guessed(letters_guessed, user_guess);
 
+     // Prints Guessed Letters
+    puts("letters guessed:");
+    for (int i = 0; i < ALPHABET_SIZE; i++)
+      printf("%c ", letters_guessed[i]);
+    printf("\n");
+
     // Check if word is guessed correctly
     if (is_word_guessed(random_word, letters_guessed, user_guess)) {
-      fputs("Correctly guessed!\n", stdout);
+      printf("The word, \"%s\" ", random_word);
+      fputs("correctly guessed!\n", stdout);
       exit(EXIT_SUCCESS);
     }
     
     //If guess not in the word, --lives
     if (!is_guess_in_word(random_word, letters_guessed, user_guess)) {
 	lives--;
-    }
-   
-    // Prints Guessed Letters
-    puts("letters guessed:");
-    for (int i = 0; i < ALPHABET_SIZE; i++)
-      printf("%c ", letters_guessed[i]);
-    printf("\n");
+    }   
    
   } while (lives > 0);
   print_hangman(lives);
-  printf("\nThe word was: %s\n", random_word);
+  printf("\nYou Lose! The word was: %s\n", random_word);
   exit(EXIT_FAILURE);
 }
