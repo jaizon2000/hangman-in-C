@@ -9,6 +9,7 @@ This program must be run on a Linux system because it takes words from `/usr/sha
 I used an Ubuntu Oracle VM Virtual Box to create this project.
 
 [Hangman Art By Chris Horton](https://gist.github.com/chrishorton/8510732aa9a80a03c829b09f12e20d9c) 
+![](https://i.imgur.com/63dfwg4.gif)
 
 ## Functions
 [to_str_lower](#to_str_lower)  
