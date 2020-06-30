@@ -1,3 +1,10 @@
+/*
+  Name: hangman.c
+  Date: June 2020
+  Description: A hangman game made in C :D
+
+  By: Jehdi Aizon
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
