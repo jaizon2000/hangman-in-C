@@ -24,8 +24,8 @@ I used an Ubuntu Oracle VM Virtual Box to create this project.
 ### put_guess_in_letters_guessed
 `void put_guess_in_letters_guessed(char letters_guessed[], char *user_guess)`
 ### is_guess_in_word
-`bool is_guess_in_word(char *word, char *letters_guessed, char *user_guess)`
+`bool is_guess_in_word(const char *word, char *letters_guessed, char *user_guess)`
 ### is_word_guessed
 `bool is_word_guessed(const char *word, const char letters_guessed[], char *user_guess)`
 ### print_hangman
-`void print_hangman(int lives)`
+`void print_hangman(const int lives)`
