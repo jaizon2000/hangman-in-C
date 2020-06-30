@@ -11,7 +11,15 @@ I used an Ubuntu Oracle VM Virtual Box to create this project.
 [Hangman Art By Chris Horton](https://gist.github.com/chrishorton/8510732aa9a80a03c829b09f12e20d9c) 
 
 ## Functions
-
+[to_str_lower](#to_str_lower)  
+[is_guess_word](#is_guess_word)  
+[get_random_word](#get_random_word)  
+[get_guess](#get_guess)  
+[print_underlines](#print_underlines)  
+[put_guess_in_letters_guessed](#put_guess_in_letters_guessed)  
+[is_guess_in_word](#is_guess_in_word)  
+[is_word_guessed](#is_word_guessed)  
+[print_hangman](#print_hangman)  
 ### to_str_lower
 Make all the char of str lowercase  
 `void to_str_lower(char *string)`
