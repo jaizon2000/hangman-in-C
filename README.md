@@ -26,7 +26,7 @@ Make all the char of str lowercase
 
 ### is_guess_word
 Is the given string a word?  
-`bool is_guess_word(char *string`
+`bool is_guess_word(char *string)`
 
 ### get_random_word
 Get and returnd a random word from `words` file  
