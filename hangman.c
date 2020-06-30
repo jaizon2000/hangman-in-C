@@ -128,7 +128,7 @@ void put_guess_in_letters_guessed(char letters_guessed[], char *user_guess) {
 // is_guess_in_word:
 // Is the guess (letter/word) in the random_word?
 // -------------------
-bool is_guess_in_word(char *word, char *letters_guessed, char *user_guess) {
+bool is_guess_in_word(const char *word, char *letters_guessed, char *user_guess) {
   if (is_guess_word(user_guess)) {
     return strstr(word, user_guess) != NULL && strlen(user_guess) == strlen(word) ? true : false;
   }
@@ -160,8 +160,12 @@ bool is_word_guessed(const char *word, const char letters_guessed[], char *user_
   return true;
 }
 
-void print_hangman(int lives) {
-  char *hangman[6];
+// ------------------- 
+// print_hangman:
+// Prints lives in hangman format
+// -------------------
+void print_hangman(const int lives) {
+  char *hangman[7];
   hangman[0] = "\n  +---+";
   hangman[1] = "  |   |";
   hangman[6] = "=========\0";
@@ -252,7 +256,7 @@ int main() {
     
     //If guess not in the word, --lives
     if (!is_guess_in_word(random_word, letters_guessed, user_guess)) {
-	--lives;
+	lives--;
     }
    
     // Prints Guessed Letters
@@ -262,6 +266,7 @@ int main() {
     printf("\n");
    
   } while (lives > 0);
+  print_hangman(lives);
   printf("\nThe word was: %s\n", random_word);
   exit(EXIT_FAILURE);
 }
