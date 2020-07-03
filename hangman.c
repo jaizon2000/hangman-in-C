@@ -152,11 +152,14 @@ bool is_guess_in_word(const char *word, char *letters_guessed, char *user_guess)
 bool is_word_guessed(const char *word, const char letters_guessed[], char *user_guess) {
   // If guess is a letter
   if (!is_guess_word(user_guess)) {
-    while (*word++) {
+    // Check each letter of word, and check if it's in letters_guessed array
+    while (*word) {
       if (isalpha(*word) && strchr(letters_guessed, *word) == NULL) {
 	return false;
       }
+      word++;
     }
+    return true;
   }
   
   // If guess is a word
@@ -165,7 +168,7 @@ bool is_word_guessed(const char *word, const char letters_guessed[], char *user_
       return true;
   }
   
-  return true;
+  return false;
 }
 
 // ------------------- 
